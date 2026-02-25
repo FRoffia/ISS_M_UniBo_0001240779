@@ -46,12 +46,43 @@ Realizzazione del  in Java del
 
 <h2>Requirement analysis</h2>
  
+<pre>
+	package java.main.conway.domain;
+	
+	public interface ICell{
+		boolean isAlive();
+		void setStatus(boolean status);
+	}
+	
+	public class Cell implements ICell{
+	}
+	
+	
+	public interface IGrid{
+		Cell getCell(int x, int y);
+		int getNeighbours(int x, int y);
+	}
+	
+	public class Grid implements IGrid{
+		public Grid(int size_x, size_y);
+	}
+	
+</pre>
 
 <h2>Problem analysis</h2>
  
 
 <h2>Test plans</h2> 
-
+<pre>
+	Piano di test per Cell:<br>
+	isAlive deve restituire il vero valore di vita della cella.<br>
+	setBooleanStatus deve modificare correttamente il valore della cella<br>
+	Quindi posso fare un test che:<br>
+	1:Settare stato a true con setBooleanStatus<br>
+	2:Controllare stato con isAlive e vedere se dà true<br>
+	3:Settare stato a false<br>
+	4:Controllare stato con isAlive e vedere se dà false<br>
+</pre>
 
 <h2>Project</h2> 
  

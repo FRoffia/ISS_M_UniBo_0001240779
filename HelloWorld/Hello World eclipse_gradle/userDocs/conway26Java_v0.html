@@ -246,6 +246,8 @@ div.imagedesc{
 
  
 <div class="remark">
+    Esattamente i requisiti in linguaggio naturale.
+    
 	Realizzare una versione in Java del gioco Life di Conway, come gioco zero-player. Il gioco consiste nell’introdurre una Griglia di Celle il cui stato (cella ‘viva’ o cella ‘morta’) evolve come stabilito dallle regole di ConwayLife<br><br>
 
 	L’utente umano deve poter:<br><br>
@@ -266,16 +268,26 @@ div.imagedesc{
 <h2>Requirement analysis</h2>
  
 <div class="remark">
-Conway's game of life fa riferimento al Gioco della vita, un automa cellulare sviluppato dal matematico inglese John Conway.<br>
-Requisiti (ricavati dal libro del corso):<br>
-Il mondo di GofLife è una griglia infinita di celle quadrate. Ogni cella può trovarsi in soli due stati: VIVA (accesa) o
-MORTA (spenta). <br>
-GofLife è un “zero-player game”: la sua evoluzione è determinata interamente dallo stato iniziale della griglia. Ad
-ogni “tick” di un clock (generazione o Epoch), si applicano quattro regole basate sui vicini di ogni cella:<br>
-• Una cella viva con meno di due celle vive adiacenti muore (per isolamento).<br>
-• Una cella viva con due o tre celle vive adiacenti sopravvive alla generazione successiva.<br>
-• Una cella viva con più di tre celle vive adiacenti muore (per sovrappopolazione).<br>
-• Una cella morta con esattamente tre celle vive adiacenti diventa una cella viva (per riproduzione).<br></div>
+No linguaggio naturale, solo linguaggio formale.
+    
+Bisogna definire strutturalmente i componenti che formano la nostra architettura. Es conway life: Life, cell e grid. Ad esempio il controller è già risultato dell'analisi.  Per definire queste cose usiamo java???
+    <br><br>
+Per dire cosa intendiamo per cell diciamo boolean cell. (perchè ha due stati). ma quindi?
+Per dire griglia diciamo array di array quindi matrice????????????
+    
+    <br><br>
+    NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>
+    INCAPSULAMENTOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>
+    
+    <br><br>
+    Quindi?
+    <br><br>
+    Specifica non dipendente dalla tecnologia ma che cerca di essere un modello. Quindi diciamo che tutto è una classe e via.
+    <br><br>
+    NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    <br><br>
+    Interfacce.
+</div>
  
 
 <h2>Problem analysis</h2>
