@@ -59,12 +59,14 @@ Realizzazione del  in Java del
 	
 	
 	public interface IGrid{
-		Cell getCell(int x, int y);
-		int getNeighbours(int x, int y);
+		boolean isCellAlive(int x, int y);
+		void setCellStatus(int x, int y, boolean v);
+		ArrayList<\Cell> getRow(int y);
+		ArrayList<\Cell> getCol(int x);
 	}
 	
 	public class Grid implements IGrid{
-		public Grid(int size_x, size_y);
+		public Grid(int size_x, size_y);//costruttore che inizializza una griglia di size_x X size_y celle. Decido che la griglia venga inizializzata a false
 	}
 	
 </pre>
@@ -76,12 +78,27 @@ Realizzazione del  in Java del
 <pre>
 	Piano di test per Cell:<br>
 	isAlive deve restituire il vero valore di vita della cella.<br>
-	setBooleanStatus deve modificare correttamente il valore della cella<br>
+	setStatus deve modificare correttamente il valore della cella<br>
 	Quindi posso fare un test che:<br>
-	1:Settare stato a true con setBooleanStatus<br>
+	1:Settare stato a true con setStatus<br>
 	2:Controllare stato con isAlive e vedere se dà true<br>
 	3:Settare stato a false<br>
 	4:Controllare stato con isAlive e vedere se dà false<br>
+	
+	Piano di test per Grid:<br>
+	isCellAlive deve restituire il vero valore di vita della cella puntata dalle coordinate.<br>
+	setCellStatus deve modificare correttamente il valore della cella puntata dalle coordinate<br>
+	Quindi posso fare un test che:<br>
+	1:Settare stato a true con setCellStatus<br>
+	2:Controllare stato con isCellAlive e vedere se dà true<br>
+	3:Settare stato a false<br>
+	4:Controllare stato con isCellAlive e vedere se dà false<br><br>
+	getRow deve restituire la riga di celle giusta.<br>
+	getCol deve restituire la colonna di celle giusta.<br>
+	Quindi posso fare un test che:<br>
+	1:Settare stato a true con setCellStatus a una riga/colonna sola<br>
+	2:Prelevare riga/colonna<br>
+	3:Verificare che sia quella giusta controllando che sia tutta vera<br>
 </pre>
 
 <h2>Project</h2> 
