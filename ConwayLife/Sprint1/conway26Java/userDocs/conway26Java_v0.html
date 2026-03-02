@@ -61,12 +61,14 @@ Realizzazione del  in Java del
 	public interface IGrid{
 		boolean isCellAlive(int x, int y);
 		void setCellStatus(int x, int y, boolean v);
-		ArrayList<\Cell> getRow(int y);
-		ArrayList<\Cell> getCol(int x);
+		ArrayList<\ICell> getRow(int y);
+		ArrayList<\ICell> getCol(int x);
+		int getWidth();
+		int getHeight();
 	}
 	
 	public class Grid implements IGrid{
-		public Grid(int size_x, size_y);//costruttore che inizializza una griglia di size_x X size_y celle. Decido che la griglia venga inizializzata a false
+		public Grid(int size_x, size_y);//costruttore che inizializza una griglia di size_x X size_y celle.
 	}
 	
 </pre>
@@ -99,6 +101,10 @@ Realizzazione del  in Java del
 	1:Settare stato a true con setCellStatus a una riga/colonna sola<br>
 	2:Prelevare riga/colonna<br>
 	3:Verificare che sia quella giusta controllando che sia tutta vera<br>
+	getWidth e getHeight devono restituire le dimensioni passate al costruttore<br>
+	1:Costruisco la griglia con valori predefiniti
+	2:Controllo se quelle restituite dai metodi corrispondono
+	
 </pre>
 
 <h2>Project</h2> 
