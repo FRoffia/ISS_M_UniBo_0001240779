@@ -3,6 +3,8 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main]
+    paths:
+      - "ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html"
 
 jobs:
   deploy:
