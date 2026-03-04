@@ -1,6 +1,7 @@
 package main.java.conway.domain;
 
 import java.util.ArrayList;
+import main.java.conway.domain.*;
 
 public class Grid  implements IGrid{
 	private int width;
@@ -51,6 +52,20 @@ public class Grid  implements IGrid{
 	@Override
 	public int getHeight() {
 		return height;
+	}
+
+	@Override
+	public ICell getCell(int x, int y) {
+		return grid.get(x).get(y);
+	}
+
+	@Override
+	public void reset() {
+		for(int i = 0; i < grid.get(0).size(); i++) {
+			for(int j = 0; j < grid.size(); j++) {
+				grid.get(j).get(i).setStatus(false);
+			}
+		}
 	}
 
 }
