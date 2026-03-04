@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="css/mystyle.css">
+<!--
+    <script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+    
+</head>
+   
+<title>conway26Java_v0</title></head>
+    
+
+<body>
+<div id="top">
+<h1>ConwayLife Sprint1</h1>
+</div>  
+
+<div class="body">  
+
+<h2>Introduction</h2>
+Realizzazione del  in Java del
+<a href='https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#chapter.6'>GAME OF LIFE DI CONWAY</a>
+ 
+<h2>Requirements</h2>
+
+ 
+<!-- <div class="remark"> -->
+<pre>
+    Realizzare una versione in Java del gioco Life di Conway, come gioco zero-player. 
+    Il gioco consiste nell’introdurre una Griglia di Celle il cui stato (cella ‘viva’ o cella ‘morta’) 
+    evolve come stabilito dallle regole di ConwayLife
+
+    L’utente umano deve poter:
+     - specificare la configurazione iniziale della griglia del gioco	
+     - vedere l’evoluzione del gioco in forma opportuna 
+        (si veda <a href='https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#section.6.3'>Problema della vista del gioco</a> )
+     - fermare e far ripartire l’evoluzione del gioco
+     - pulire (a gioco fermo) la configurazione della griglia del gioco
+
+</pre>
+ 
+
+ 
+
+<h2>Requirement analysis</h2>
+ 
+<pre>
+	//Il committente cosa pensa che sia una cella?????
+	
+	package main.java.conway.domain;
+
+	public interface ICell{
+		boolean isAlive();//primitiva, restituisce stato vivo o morto della cella
+		void setStatus(boolean status);//primitiva, porta la cella allo stato vivo o morto
+	}
+	
+	//Piano di test per Cell:<br>
+		package main.java.test;
+
+		import static org.junit.Assert.*;
+
+		import org.junit.*;
+
+		import main.java.conway.domain.ICell;
+		import main.java.conway.domain.Cell;
+
+		public class CellTest {
+			private ICell c; //simbolo c che spazierà nel dominio delle ICell
+			
+			@Before
+			public void setup() {
+				c = new Cell();
+			}
+
+			@After
+			public void down() {
+			}
+			
+			@Test
+			public void testCellAlive() {
+				c.setStatus(true);
+				assertTrue(c.isAlive());
+			}
+			
+			@Test
+			public void testCellDead() {	
+				c.setStatus(false);
+				assertFalse(c.isAlive());
+			}
+		}
+	
+	//---------------------------------------------------------------------------------
+	
+	/*Il committente cosa pensa che sia una griglia?????
+	E' atomica o composta? -> E' un entità composta da celle
+	Da quante celle? -> 100 celle NO!!!!!
+	Riformuliamo: quante dimensioni ha? -> E' bidimensionale
+	Quali sono queste dimensioni? -> Hanno una lunghezza....*/
+	
+	package main.java.conway.domain;
+	
+	public interface IGrid{
+		boolean isCellAlive(int x, int y);//restituisce lo stato della cella locata alle coordinate x e y
+		void setCellStatus(int x, int y, boolean v);//porta la cella locata alle coordinate x,y allo stato indicato
+		ArrayList<\ICell> getRow(int y);//restituisce la y-esima riga di celle
+		ArrayList<\ICell> getCol(int x);//restituisce la x-esima riga di celle
+		int getWidth();//primitiva, restituisce larghezza della griglia
+		int getHeight();//primitiva, restituisce altezza della griglia
+		ICell getCell(int x, int y);//primitiva, restituisce la cella alle coordinate x,y
+		public void reset();//primitiva, porta tutte le celle allo stato morto
+	}
+	
+	Piano di test per Grid:<br>
+		package main.java.test;
+
+		import static org.junit.Assert.*;
+
+		import java.util.ArrayList;
+
+		import org.junit.*;
+
+		import main.java.conway.domain.IGrid;
+		import main.java.conway.domain.Cell;
+		import main.java.conway.domain.ICell;
+		import main.java.conway.domain.Grid;
+
+		public class GridTest {
+			private IGrid g;
+			private int width;
+			private int height;
+			
+			@Before
+			public void setup() {
+				width = 10;
+				height = 10;
+				g = new Grid(width,height);
+				g.reset();
+			}
+
+			@After
+			public void down() {
+			}
+			
+			/*
+			isCellAlive deve restituire il vero valore di vita della cella puntata dalle coordinate.<br>
+			setCellStatus deve modificare correttamente il valore della cella puntata dalle coordinate<br>
+			Quindi posso fare un test che:<br>
+			1:Settare stato a true con setCellStatus<br>
+			2:Controllare stato con isCellAlive e vedere se dà true<br>
+			3:Settare stato a false<br>
+			4:Controllare stato con isCellAlive e vedere se dà false<br><br>  
+			 */
+			@Test
+			public void testCellAlive() {
+				g.setCellStatus(5,5,true);
+				assertTrue(g.isCellAlive(5,5));
+			}
+			
+			@Test
+			public void testCellDead() {	
+				g.setCellStatus(5,5,false);
+				assertFalse(g.isCellAlive(5,5));
+			}
+			
+			
+			/*
+			getRow deve restituire la riga di celle giusta.<br>
+			getCol deve restituire la colonna di celle giusta.<br>
+			Quindi posso fare un test che:<br>
+			1:Settare stato a true con setCellStatus a una riga/colonna sola<br>
+			2:Prelevare riga/colonna<br>
+			3:Verificare che sia quella giusta controllando che sia tutta vera<br><br>
+			*/
+			@Test 
+			public void testGetRow() {
+				for(int i = 0; i < width; i++) {
+					g.setCellStatus(i, 5, true);
+				}
+				ArrayList<\ICell> row = g.getRow(5);
+				for(int i = 0; i < width; i++) {
+					assertTrue(row.get(i).isAlive());
+				}
+			}
+			
+			@Test 
+			public void testGetCol() {
+				for(int i = 0; i < height; i++) {
+					g.setCellStatus(5, i, true);
+				}
+				ArrayList<\ICell> col = g.getCol(5);
+				for(int i = 0; i < height; i++) {
+					assertTrue(col.get(i).isAlive());
+				}
+			}
+			
+			/*getWidth e getHeight devono restituire le dimensioni passate al costruttore<br>
+			1:Costruisco la griglia con valori predefiniti<br>
+			2:Controllo se quelle restituite dai metodi corrispondono<br><br>*/
+			@Test
+			public void testGetHeight() {
+				assertEquals(g.getHeight(),height);
+			}
+			
+			@Test
+			public void testGetWidth() {
+				assertEquals(g.getWidth(),width);
+			}
+			
+			/*getCell deve restituire la cella giusta. Quindi:
+			1:Con setCellStatus porto una cella a vivo
+			2:Con getCell la vado a prendre
+			3:Controllo che sia vera*/
+			@Test
+			public void testGetCell() {
+				g.setCellStatus(5, 5, true);
+				assertTrue(g.getCell(5, 5).isAlive());
+			}
+			
+			/*Per testare reset provo ad impostare tutte le celle a true con la primitiva get Cell, eseguo reset, e controllo che tutte siano 
+			state portate a false*/
+			@Test
+			public void testReset() {
+				for(int i = 0; i < height; i++) {
+					for(int j = 0; j < width; j++) {
+						g.getCell(j, i).setStatus(true);
+					}
+				}
+				g.reset();
+				for(int i = 0; i < height; i++) {
+					for(int j = 0; j < width; j++) {
+						assertFalse(g.getCell(j, i).isAlive());
+					}
+				}
+			}
+		}
+	
+</pre>
+
+<h2>Problem analysis</h2>
+ 
+
+<h2>Test plans</h2> 
+<pre>
+	
+	
+	
+	
+</pre>
+
+<h2>Project</h2> 
+ 
+ 
+
+<h2>Testing</h2> 
+ 
+
+<h2>Deployment</h2> 
+
+ 
+<h2>Maintenance</h2> 
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:70%;text-align:left;color:white">
+By Roffia Francesco email: francesco.roffia@studio.unibo.it, 
+<!-- <img src="./img/mbot-S.jpg" alt="mbot" width="15%" height="15%"> -->
+<img src="./img/Fototessera.jpg" alt="fototessera" width="8%" height="8%">
+GIT repo: https://github.com/FRoffia/ISS_M_UniBo_0001240779.git
+</div> 
+</body>
+</html>
