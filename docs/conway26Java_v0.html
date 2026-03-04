@@ -47,28 +47,22 @@ Realizzazione del  in Java del
 <h2>Requirement analysis</h2>
  
 <pre>
-	package java.main.conway.domain;
+	Il committente cosa pensa che sia una cella?????
 	
 	public interface ICell{
-		boolean isAlive();
-		void setStatus(boolean status);
+		boolean isAlive();//restituisce stato vivo o morto della cella
+		void setStatus(boolean status);//porta la cella allo stato vivo o morto
 	}
 	
-	public class Cell implements ICell{
-	}
-	
+	Il committente cosa pensa che sia una griglia?????
 	
 	public interface IGrid{
-		boolean isCellAlive(int x, int y);
-		void setCellStatus(int x, int y, boolean v);
-		ArrayList<\ICell> getRow(int y);
-		ArrayList<\ICell> getCol(int x);
-		int getWidth();
-		int getHeight();
-	}
-	
-	public class Grid implements IGrid{
-		public Grid(int size_x, size_y);//costruttore che inizializza una griglia di size_x X size_y celle.
+		boolean isCellAlive(int x, int y);//restituisce lo stato della cella locata alle coordinate x e y
+		void setCellStatus(int x, int y, boolean v);//porta la cella locata alle coordinate x,y allo stato indicato
+		ArrayList<\ICell> getRow(int y);//restituisce la y-esima riga di celle
+		ArrayList<\ICell> getCol(int x);//restituisce la x-esima riga di celle
+		int getWidth();//restituisce larghezza della griglia
+		int getHeight();//restituisce altezza della griglia
 	}
 	
 </pre>
