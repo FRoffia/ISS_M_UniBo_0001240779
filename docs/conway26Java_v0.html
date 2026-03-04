@@ -55,7 +55,12 @@ Realizzazione del  in Java del
 	}
 	
 	Il committente cosa pensa che sia una griglia?????
-	
+	E' atomica o composta? -> E' un entità composta da celle
+	Da quante celle? -> 100 celle NO!!!!!
+	Riformuliamo: quante dimensioni ha? -> E' bidimensionale
+	Quali sono queste dimensioni? -> Hanno una lunghezza....
+	Ogni entità ha 3 punti di vista: struttura, comportamento, interazione. Vogliamo fare domande per capire tutti questi punti di vista.
+	Per interazione intendiamo capire come fare ad interagire con questa entità.
 	public interface IGrid{
 		boolean isCellAlive(int x, int y);//restituisce lo stato della cella locata alle coordinate x e y
 		void setCellStatus(int x, int y, boolean v);//porta la cella locata alle coordinate x,y allo stato indicato
@@ -63,6 +68,7 @@ Realizzazione del  in Java del
 		ArrayList<\ICell> getCol(int x);//restituisce la x-esima riga di celle
 		int getWidth();//restituisce larghezza della griglia
 		int getHeight();//restituisce altezza della griglia
+		ICell getCell(int x, int y);//restituisce la cella alle coordinate x,y
 	}
 	
 </pre>
