@@ -1,0 +1,26 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Copia il file nella root
+        run: cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./conway26Java_v0.html
+
+      - name: Push nella repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Auto: aggiorna report sprint1 in pages" || echo "Niente da committare"
+          git push
