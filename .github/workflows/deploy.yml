@@ -1,17 +1,19 @@
-name: Deploy GitHub Pages
-
+name: Deploy GitHub Pages - Aggiornamento sprint1
 on:
   push:
     branches: [main]
     paths:
       - "ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html"
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -19,10 +21,14 @@ jobs:
       - name: Copia il file nella root
         run: cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./docs/conway26Java_v0.html
 
-      - name: Push nella repo
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "Auto: aggiorna report sprint1 in pages" || echo "Niente da committare"
-          git push
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
