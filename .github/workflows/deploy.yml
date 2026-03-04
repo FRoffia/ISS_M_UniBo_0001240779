@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copia il file nella root
-        run: cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./conway26Java_v0.html
+        run: cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./docs/conway26Java_v0.html
 
       - name: Push nella repo
         run: |
