@@ -13,23 +13,22 @@ public class Life implements LifeInterface{
    }
 
     // Costruttore che accetta una griglia pre-configurata (utile per i test)
-    /*public Life(boolean[][] initialGrid) {
-    	this.rows = initialGrid.length;
-        this.cols = initialGrid[0].length;
+    public Life(boolean[][] initialGrid) {
+    	this.currentGrid = new Grid(initialGrid[0].length,initialGrid.length);
+        this.nextGrid    = new Grid(initialGrid[0].length,initialGrid.length);
         
-        // Inizializziamo entrambe le matrici
-        this.gridA = new boolean[rows][cols];
-        this.gridB = new boolean[rows][cols];
-        
-        this.gridA = deepCopyJava8(initialGrid);
-        this.currentGrid = gridA;
-        this.nextGrid    = gridB;   
-    }*/
+        for(int i = 0; i < this.currentGrid.getHeight(); i++) {
+        	for(int j = 0; j < this.currentGrid.getWidth(); j++) {
+        		this.currentGrid.setCellStatus(j,i,initialGrid[i][j]);
+        		this.nextGrid.setCellStatus(j,i,false);
+        	}
+        }
+    }
 
     // Costruttore che crea una griglia vuota di dimensioni specifiche (tutte le celle vengono inizializzate qui a false)
     public Life(int rows, int cols) {
     	currentGrid = new Grid(cols,rows);
-    	nextGrid = new Grid(rows,cols);
+    	nextGrid = new Grid(cols,rows);
     	for(int i = 0; i < rows; i++) {
     		for(int j = 0; j < cols; j++) {
     			currentGrid.setCellStatus(i, j, false);
@@ -78,7 +77,7 @@ public class Life implements LifeInterface{
         	if( currentGrid.isCellAlive(col-1, row)) count++;
          }
         if (col+1 < currentGrid.getWidth()) {
-        	if( currentGrid.isCellAlive(row, col+1)) count++;
+        	if( currentGrid.isCellAlive(col+1,row)) count++;
        }
         if (row+1 < currentGrid.getHeight()) {
         	if( currentGrid.isCellAlive(col, row+1)) count++;
