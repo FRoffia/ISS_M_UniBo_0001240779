@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - "ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html"
+      - "docs/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest
