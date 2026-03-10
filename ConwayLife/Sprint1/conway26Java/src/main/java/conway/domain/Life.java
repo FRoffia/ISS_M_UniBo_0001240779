@@ -95,16 +95,12 @@ public class Life implements LifeInterface{
 
     // Metodi di utilità per i test
     public boolean getCell(int r, int c) { return currentGrid.isCellAlive(c, r); }
+    
     public void setCell(int r, int c, boolean state) { currentGrid.setCellStatus(c, r, state); }
-    public boolean[][] getGrid() {
-    	boolean[][] grid = new boolean[currentGrid.getHeight()][currentGrid.getWidth()];
-    	for(int i = 0; i < currentGrid.getHeight();i++) {
-    		for(int j = 0; j < currentGrid.getWidth();j++) {
-    			grid[i][j] = currentGrid.isCellAlive(j, i);
-    		}
-    	}
-    	return grid; 
-	}
+    
+    public IGrid getGrid() {
+    	return currentGrid;	
+    }
 
 	@Override
 	public boolean isAlive(int row, int col) {
@@ -142,6 +138,7 @@ public class Life implements LifeInterface{
 	                 .toArray(boolean[][]::new);
 	}
 	
+	@Override
 	public String gridRep( ) {
 		String toString = new String();
 		for(int i = 0; i < currentGrid.getHeight(); i++) {
@@ -157,5 +154,16 @@ public class Life implements LifeInterface{
 	    
 	    
 	    return toString;
+	}
+	
+	@Override
+	public void resetGame() {
+		currentGrid.reset();
+		nextGrid.reset();
+	}
+	
+	@Override
+	public void switchCellState(int row, int col) {
+		currentGrid.getCell(col, row).setStatus(!currentGrid.getCell(col, row).isAlive());
 	}
 }

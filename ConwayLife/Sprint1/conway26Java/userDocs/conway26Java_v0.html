@@ -325,10 +325,10 @@ Realizzazione del  in Java del
 	package main.java.conway.domain
 	
 	public interface GameController{
-		void reset();//reset della griglia a stato iniziale
-		void nextGeneration();//prosegui di una generazione
-		void switchCellStatus(int x, int y);//cambia lo stato della cella alle coordinate x,y
-		void auto(int n);//procedi automaticamente di n generazioni
+		void reset();//reset della griglia a stato iniziale, aggiorna il device di output con la griglia aggiornata
+		void nextGeneration();//prosegui di una generazione, aggiorna il device di output con la griglia aggiornata
+		void switchCellStatus(int x, int y);//cambia lo stato della cella alle coordinate x,y, aggiorna il device di output con la griglia aggiornata
+		void auto(int n);//procedi automaticamente di n generazioni, aggiorna il device di output con la griglia aggiornata
 	}
 	
 	//Test di Game Controller:

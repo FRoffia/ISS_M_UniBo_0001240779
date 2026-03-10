@@ -1,33 +1,48 @@
 package main.java.conway.domain;
 
 public class LifeController implements GameController{
-
-	public LifeController() {
-		
+	IOutDev outDev;
+	Life game;
+	
+	public LifeController(IOutDev device) {
+		outDev = device;
 	}
 	
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+		game.resetGame();
+		update();
 	}
 
 	@Override
 	public void nextGeneration() {
-		// TODO Auto-generated method stub
-		
+		game.nextGeneration();
+		update();
 	}
 
 	@Override
 	public void switchCellStatus(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		game.switchCellState(y, x);// TODO Auto-generated method stub
+		update();
 	}
 
 	@Override
 	public void auto(int n) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < n; i++) {
+			game.nextGeneration();
+			update();
+			try {
+				wait(800);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
+	}
+	
+	private void update() {
+		outDev.displayGrid((Grid)game.getGrid());
 	}
 
 }
