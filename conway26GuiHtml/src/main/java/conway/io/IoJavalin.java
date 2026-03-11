@@ -1,15 +1,20 @@
 package conway.io;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import io.javalin.websocket.WsMessageContext;
 import unibo.basicomm23.utils.CommUtils;
+import unibo.basicomm23.interfaces.IApplMessage;
+import unibo.basicomm23.msg.ApplMessage;
 
 public class IoJavalin {
 	
+	private WsMessageContext pageCtx ;
 	public IoJavalin() {
         var app = Javalin.create(config -> {
 			config.staticFiles.add(staticFiles -> {
@@ -20,13 +25,25 @@ public class IoJavalin {
 				 */
 		    });
 		}).start(8080);
-        
+ 
+/*
+ * --------------------------------------------
+ * Parte HTTP        
+ * --------------------------------------------
+ */
         app.get("/", ctx -> {
-    		Path path = Path.of("./src/main/resources/page/ConwayInOutPage.html");   
-		    if (Files.exists(path)) {
-		        // Usiamo Files.newInputStream che è più moderno di FileInputStream
-		        ctx.contentType("text/html").result(Files.newInputStream(path));
-		    } else {
+    		//Path path = Path.of("./src/main/resources/page/ConwayInOutPage.html");    		    
+        	/*
+        	 * Java cercherà il file all'interno del Classpath 
+        	 * (dentro il JAR o nelle cartelle dei sorgenti di Eclipse), 
+        	 * rendendo il codice universale
+         	 */
+        	var inputStream = getClass().getResourceAsStream("/page/ConwayInOutPage.html");       	
+        	if (inputStream != null) {
+        		// Trasformiamo l'inputStream in stringa (o lo mandiamo come stream)
+        	    String content = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        	    ctx.html(content);
+        	} else {
 		        ctx.status(404).result("File non trovato nel file system");
 		    }
 		    //ctx.result("Hello from Java!"));  //la forma più semplice di risposta
@@ -35,7 +52,7 @@ public class IoJavalin {
         app.get("/greet/{name}", ctx -> {
             String name = ctx.pathParam("name");
             ctx.result("Hello, " + name + "!");
-        }); //http://localhost:7070/greet/Alice
+        }); //http://localhost:8080/greet/Alice
         
         app.get("/api/users", ctx -> {
             Map<String, Object> user = Map.of("id", 1, "name", "Bob");
@@ -43,7 +60,7 @@ public class IoJavalin {
         });
         
         /*
-         * Javalin v5+): Si passa solo la "promessa" (il Supplier del Future). 
+         * Javalin v5+: Si passa solo la "promessa" (il Supplier del Future). 
          * Javalin è diventato più intelligente: se il Future restituisce una Stringa, 
          * lui fa ctx.result(stringa). Se restituisce un oggetto, lui fa ctx.json(oggetto).
          * 
@@ -57,7 +74,7 @@ public class IoJavalin {
 	            new Thread(() -> { 
 	                try {
 	                    Thread.sleep(2000); // Simulazione calcolo pesante
-	                    future.complete("Risultato calcolato asincronamente");
+	                    future.complete("IoJavalin | Risultato calcolato asincronamente");
 	                } catch (Exception e) {
 	                    future.completeExceptionally(e);
 	                }
@@ -75,15 +92,41 @@ public class IoJavalin {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                return "Risultato calcolato con supplyAsync";
+                return "IoJavalin | Risultato calcolato con supplyAsync";
             }));
         });
+/*
+ * --------------------------------------------
+ * Parte Websocket
+ * --------------------------------------------
+ */
         
         app.ws("/chat", ws -> {
-            ws.onConnect(ctx -> System.out.println("Client connected!"));
+            ws.onConnect(ctx -> CommUtils.outgreen("Client connected chat!"));
             ws.onMessage(ctx -> {
                 String message = ctx.message();
+                CommUtils.outcyan("IoJavalin |  riceve:" + message);
                 ctx.send("Echo: " + message);
+            });
+        });        
+        app.ws("/eval", ws -> {
+            ws.onConnect(ctx -> CommUtils.outgreen("IoJavalin | Client connected eval"));
+            ws.onMessage(ctx -> {
+                String message = ctx.message();     
+                CommUtils.outblue("IoJavalin |  eval receives:" + message );
+                try {
+                	IApplMessage m = new ApplMessage(message);
+                    CommUtils.outblue("IoJavalin |  eval:" + m.msgContent() );
+                    if( m.msgContent().equals("ready")) { 
+                    	pageCtx = ctx;  //memorizzo connession pagina
+                    }else if( m.msgContent().contains("cell(")) { 
+                    	//Funziona se arriva da CallerServerWs es. cell(5,6,1)
+                    	pageCtx.send( m.msgContent()); 
+                    	//TODO: inviare a LifeController
+                    }else ctx.send(m.msgContent());
+                }catch(Exception e) {
+                	CommUtils.outred("IoJavalin |  error:" + e.getMessage());
+                }               
             });
         });        
 	}
