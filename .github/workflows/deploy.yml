@@ -22,7 +22,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copia il file nella root
-        run: cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./docs/conway26Java_v0.html
+        run: |
+          cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./docs/conway26Java_v0.html
+          cp ConwayLife/Sprint2/conway26JavaSwing/userDocs/conway26JavaSwing_v0.html ./docs/conway26JavaSwing_v0.html
+          cp conway26GuiHtml/userDocs/conway26GuiHtml_v0.html
+        
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
