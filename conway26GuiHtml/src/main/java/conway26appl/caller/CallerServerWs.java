@@ -58,8 +58,8 @@ public class CallerServerWs  {
     	//HttpClient client = HttpClient.newHttpClient();
         
         WebSocket webSocket = client.newWebSocketBuilder()
-            .buildAsync(URI.create("ws://localhost:8080/eval"), new WebSocketListener(latch))
-            .join();
+	        .buildAsync(URI.create("ws://localhost:8080/eval"), new WebSocketListener(latch))
+	        .join();
 
         // Invio di un messaggio al server
         // webSocket.sendText(setctrl.toString(), true);

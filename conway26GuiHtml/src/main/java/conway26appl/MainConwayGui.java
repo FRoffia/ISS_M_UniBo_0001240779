@@ -4,7 +4,8 @@ import conway.io.IoJavalin;
 //import main.java.conway.domain.*;
 import unibo.basicomm23.utils.CommUtils;
 public class MainConwayGui  {
-   	private IoJavalin server = new IoJavalin();
+	private IoJavalin server = new IoJavalin();
+   	
   	
     public static void main(String[] args) {
 	    System.out.println("MainConway | STARTS " );  
@@ -12,7 +13,7 @@ public class MainConwayGui  {
 		var resource = MainConwayGui.class.getResource("/page");
 		CommUtils.outgreen("DEBUG: La cartella /page si trova in: " + resource);
 
-	    MainConwayGui app = new MainConwayGui();
+	    MainConwayGui app = new MainConwayGui(); //qua in realtà andiamo a far partire il server
 	    System.out.println("MainConway | ENDS " );  
     }
 

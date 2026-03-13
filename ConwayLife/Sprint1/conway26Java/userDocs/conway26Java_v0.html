@@ -322,16 +322,104 @@ Realizzazione del  in Java del
 	Game Controller
 	*/
 	
-	package main.java.conway.domain
-	
-	public interface GameController{
-		void reset();//reset della griglia a stato iniziale, aggiorna il device di output con la griglia aggiornata
-		void nextGeneration();//prosegui di una generazione, aggiorna il device di output con la griglia aggiornata
-		void switchCellStatus(int x, int y);//cambia lo stato della cella alle coordinate x,y, aggiorna il device di output con la griglia aggiornata
-		void auto(int n);//procedi automaticamente di n generazioni, aggiorna il device di output con la griglia aggiornata
+	package main.java.conway.domain;
+
+	public interface GameController {
+		 int getGenTime();
+		 void switchCellState(int x, int y); //invoca displayGrid di IOutDevice
+		 void onStart();
+		 void onStop();
+		 void onClear();
+		 int numEpoch();
 	}
 	
-	//Test di Game Controller:
+	
+	/*
+	IOut Device
+	*/
+		
+	package main.java.conway.domain;
+	/*
+	 * Contratto definito dalla business logic
+	 */
+	public interface IOutDev {
+		public void display(String msg);      //For HMI
+		public void displayCell(IGrid grid, int x, int y);   
+		public void close();
+		public void displayGrid(IGrid grid);
+
+	}
+	
+	//Test di Controller (simulazione gioco con test):
+	
+	public class ConwayLifeTest {
+		private static final int nRows=5;
+		private static final int nCols=5;
+		private LifeInterface lifemodel; 
+
+		@Before
+		public void setup() {
+			System.out.println("ConwayLifeTest | setup");	
+			lifemodel = Life.CreateLife(nRows,nCols);
+		}
+
+		@After
+		public void down() {
+			System.out.println("ConwayLifeTest | down");
+		}
+
+	 
+		@Test
+		public void testAppl() {
+			LifeInterface gameModel       = new Life(nRows, nCols);
+			IOutDev outputDevice          = new MockOutdev();
+			GameController lifeController = new LifeController(gameModel, outputDevice);
+			int genTime                   = lifeController.getGenTime();
+	        lifeController.switchCellState(2, 1);
+	        lifeController.switchCellState(2, 2);
+	        lifeController.switchCellState(2, 3);
+	        lifeController.onStart();
+	        //gameModel.nextGeneration();
+	        int nstep = 4;
+	        int delay = genTime * nstep;
+	        lifeController.onStart();
+	        CommUtils.delay(delay);
+	        lifeController.onStop();
+	        assertTrue( lifeController.numEpoch() == (nstep-1) );
+	        lifeController.onClear();
+	        outputDevice.close();
+	        assertTrue( lifeController.numEpoch() == 0 );
+	        
+	//        MainConwayLifeJava app = new MainConwayLifeJava();
+	//        app.configureTheSystemWitMockOutdev();
+		}
+		
+		
+		//@Test
+		public void testOscilla() {
+			System.out.println("testOscilla ---------"  );
+			// Configurazione orizzontale
+		    lifemodel.setCell(2, 1, true); 
+		    lifemodel.setCell(2, 2, true);
+		    lifemodel.setCell(2, 3, true);
+		    System.out.println("testOscilla | Stato Iniziale:\n" + lifemodel.getGrid());
+
+		    lifemodel.nextGeneration();
+		    System.out.println("testOscilla | after 1 gen:\n" + lifemodel.getGrid());
+		    // Verifica che sia diventato verticale
+		    assertTrue(lifemodel.isAlive(1, 2)); 
+		    assertTrue(lifemodel.isAlive(2, 2));
+		    assertTrue(lifemodel.isAlive(3, 2));
+		    assertFalse(lifemodel.isAlive(2, 1));
+
+		    lifemodel.nextGeneration();
+		    System.out.println("testOscilla | after 2 gen :\n" + lifemodel.getGrid());
+		    // Verifica che sia tornato orizzontale (Periodo 2)
+		    assertTrue(lifemodel.isAlive(2, 1));
+		    assertTrue(lifemodel.isAlive(2, 2));
+		    assertTrue(lifemodel.isAlive(2, 3));
+		}	
+	}
 	
 </pre>
 

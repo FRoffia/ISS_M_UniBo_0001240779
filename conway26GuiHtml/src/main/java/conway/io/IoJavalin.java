@@ -1,6 +1,7 @@
 package conway.io;
 
 import java.nio.charset.StandardCharsets;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -11,11 +12,18 @@ import io.javalin.websocket.WsMessageContext;
 import unibo.basicomm23.utils.CommUtils;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.msg.ApplMessage;
+import main.java.conway.domain.*;
+import java.util.regex.*;
 
-public class IoJavalin {
+public class IoJavalin implements IOutDev{
 	
 	private WsMessageContext pageCtx ;
+	private GameController lifeController;
+	
 	public IoJavalin() {
+		
+		lifeController = new LifeController(new Life(20,20),(IOutDev)this);
+		
         var app = Javalin.create(config -> {
 			config.staticFiles.add(staticFiles -> {
 				staticFiles.directory = "/page";
@@ -24,7 +32,7 @@ public class IoJavalin {
 				 * i file sono "impacchettati" con il codice, non cercati sul disco rigido esterno.
 				 */
 		    });
-		}).start(8080);
+		}).start(8080);//ci mettiamo su porta 8080	
  
 /*
  * --------------------------------------------
@@ -108,9 +116,11 @@ public class IoJavalin {
                 CommUtils.outcyan("IoJavalin |  riceve:" + message);
                 ctx.send("Echo: " + message);
             });
-        });        
+        });
+        
         app.ws("/eval", ws -> {
             ws.onConnect(ctx -> CommUtils.outgreen("IoJavalin | Client connected eval"));
+            
             ws.onMessage(ctx -> {
                 String message = ctx.message();     
                 CommUtils.outblue("IoJavalin |  eval receives:" + message );
@@ -119,10 +129,30 @@ public class IoJavalin {
                     CommUtils.outblue("IoJavalin |  eval:" + m.msgContent() );
                     if( m.msgContent().equals("ready")) { 
                     	pageCtx = ctx;  //memorizzo connession pagina
+                    	
+                    	
+                    	
                     }else if( m.msgContent().contains("cell(")) { 
-                    	//Funziona se arriva da CallerServerWs es. cell(5,6,1)
-                    	pageCtx.send( m.msgContent()); 
-                    	//TODO: inviare a LifeController
+                    	//faccio decodifica del messaggio estrapolando le coordinate della cella
+                    	Pattern pattern = Pattern.compile("cell\\((\\d+),(\\d+)\\)");
+                        Matcher matcher = pattern.matcher(m.msgContent());
+                        matcher.find();
+                        int x = Integer.parseInt(matcher.group(1));
+                        int y = Integer.parseInt(matcher.group(2));
+                        
+                        //invoco il metodo del controller per cambiare lo stato di una cella
+                    	lifeController.switchCellState(x, y);
+                    	
+                    	
+                    }else if (m.msgContent().contains("start")){//comando per cominciare la simulazione
+                    	lifeController.onStart();
+                    	
+                    }else if (m.msgContent().contains("stop")){//comando per fermare la simulazione
+                    	lifeController.onStop();
+                    
+                    }else if (m.msgContent().contains("clear")){//comando per pulire la griglia
+                    	lifeController.onClear();
+                    
                     }else ctx.send(m.msgContent());
                 }catch(Exception e) {
                 	CommUtils.outred("IoJavalin |  error:" + e.getMessage());
@@ -131,11 +161,36 @@ public class IoJavalin {
         });        
 	}
 	
- 
+	@Override //IOutDev
+	public void display(String msg) {
+		
+	}
+
+ 	
+	@Override //IOutDev
+	public void displayCell(IGrid grid, int x, int y) {
+		//qua praticamente dobbiamo ri costruire il messaggio per il client?
+		int isAlive = grid.getCellValue(x, y)?1:0;
+		CommUtils.outgreen("eval sends to client: cell("+x+","+y+","+isAlive+")");
+		pageCtx.send("cell("+x+","+y+","+isAlive+")");
+		
+	}
 	
+	@Override //IOutDev
+	public void displayGrid(IGrid newGrid) {
+		for(int i = 0; i < newGrid.getRowsNum(); i++) {
+			for(int j = 0; j < newGrid.getColsNum(); j++) {
+				this.displayCell(newGrid,i,j);
+			}
+		}
+	}
+	
+	@Override //IOutDev
+	public void close() {
+	}
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {//questo refuso mi sa
 		var resource = IoJavalin.class.getResource("/pages");
 		CommUtils.outgreen("DEBUG: La cartella /page si trova in: " + resource);
 		new IoJavalin();
