@@ -9,12 +9,12 @@
     
 </head>
    
-<title>conway26JavaSwing_v0</title></head>
+<title>conway26GuiHtml_v0</title></head>
     
 
 <body>
 <div id="top">
-<h1>ConwayLife Sprint2</h1>
+<h1>ConwayLife Sprint3</h1>
 </div>  
 
 <div class="body">  
@@ -22,7 +22,7 @@
 <h2>Introduction</h2>
 <b>Goal</b>: dotare il 
 <a href='https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#chapter.6'>GAME OF LIFE DI CONWAY</a>
-di una interfaccia grafica di interazione con l'utente, per realizzare il <b>requisito R2</b>.
+di una interfaccia grafica in html tramite server javalin.
  
 <h2>Requirements</h2>
 
@@ -44,10 +44,37 @@ R2: L’utente umano deve poter:
   
 
 <h2>Requirement analysis</h2>
+
+<pre>
+	package main.java.conway.domain;
+		
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/ICell.java">ICell</a>
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/test/CellTest.java">CellTest</a>
+	
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/IGrid.java">IGrid</a>
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/test/GridTest.java">GridTest</a>
+	
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/LifeInterface.java">LifeInterface</a>
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/test/LifeTest.java">LifeTest</a>
+	
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/GameInterface.java">GameInterface</a>
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/IOutDev.java">IOutDev</a>
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/test/ConwayLifeTest.java">ConwayLifeTest</a>
+
+	
+	package conway.io
+	
+	<a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/conway26GuiHtml/src/main/java/conway/io/IoJavalin.java">IoJavalin</a> (Extends IOutDev)
+	
+</pre>
  
 
 <h2>Problem analysis</h2>
- 
+ <pre>
+	<img src="img/requisiti_progetto_javalin_integrato.png">
+		
+	JavalinIO integrato, quindi istanzia al suo interno LifeController
+</pre>
 
 <h2>Test plans</h2> 
 
@@ -77,11 +104,11 @@ R2: L’utente umano deve poter:
 <br/><br/> 	
 </div>  
 
-<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
-By studentName email: student@studio.unibo.it, 
+<div style="background-color:rgba(86, 56, 253, 0.9); width:70%;text-align:left;color:white">
+By Roffia Francesco email: francesco.roffia@studio.unibo.it, 
 <!-- <img src="./img/mbot-S.jpg" alt="mbot" width="15%" height="15%"> -->
-<img src="./img/emiglio.png" alt="emiglio" width="15%" height="15%">
-GIT repo: https://github.com/... 
+<img src="./img/Fototessera.jpg" alt="fototessera" width="8%" height="8%">
+GIT repo: https://github.com/FRoffia/ISS_M_UniBo_0001240779.git
 </div> 
 </body>
 </html>
