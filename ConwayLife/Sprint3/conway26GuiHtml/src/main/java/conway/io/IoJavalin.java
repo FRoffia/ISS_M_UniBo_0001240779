@@ -171,7 +171,7 @@ public class IoJavalin implements IOutDev{
 	public void displayCell(IGrid grid, int x, int y) {
 		//qua praticamente dobbiamo ri costruire il messaggio per il client?
 		int isAlive = grid.getCellValue(x, y)?1:0;
-		CommUtils.outgreen("eval sends to client: cell("+x+","+y+","+isAlive+")");
+		//CommUtils.outgreen("eval sends to client: cell("+x+","+y+","+isAlive+")");
 		pageCtx.send("cell("+x+","+y+","+isAlive+")");
 		
 	}
