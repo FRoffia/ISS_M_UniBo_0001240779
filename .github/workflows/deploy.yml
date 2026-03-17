@@ -5,7 +5,7 @@ on:
     paths:
       - "ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html"
       - "ConwayLife/Sprint2/conway26JavaSwing/userDocs/conway26JavaSwing_v0.html"
-      - "ConwayLife/Sprint3/conway26GuiHtml/userDocs/conway26GuiHtml_v0.html"
+      - "ConwayLife/Sprint3_distribuito/conway26GuiHtml/userDocs/conway26GuiHtml_v0.html"
       - "docs/**"
 jobs:
   deploy:
@@ -25,7 +25,7 @@ jobs:
         run: |
           cp ConwayLife/Sprint1/conway26Java/userDocs/conway26Java_v0.html ./docs/conway26Java_v0.html
           cp ConwayLife/Sprint2/conway26JavaSwing/userDocs/conway26JavaSwing_v0.html ./docs/conway26JavaSwing_v0.html
-          cp ConwayLife/Sprint3/conway26GuiHtml/userDocs/conway26GuiHtml_v0.html ./docs/conway26GuiHtml_v0.html
+          cp ConwayLife/Sprint3_distribuito/conway26GuiHtml/userDocs/conway26GuiHtml_v0.html ./docs/conway26GuiHtml_v0.html
         
 
       - name: Setup Pages
