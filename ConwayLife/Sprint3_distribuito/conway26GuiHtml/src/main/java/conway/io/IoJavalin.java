@@ -144,42 +144,51 @@ public class IoJavalin {
                 	//La pagina e il mondo esterno comuicano col server con IApplMessage
                 	IApplMessage m = new ApplMessage(message);
                     //CommUtils.outblue(name + " |  eval:" + m.msgContent() );
-                	if( m.msgContent().startsWith("[[")) {
+                	
+                	if( m.msgContent().startsWith("[[")) {//qua facciamo forward e mandiamo alla pagina
                 		pageCtx.send( m.msgContent()); 
                 		return;
                 	}
+                	
+                	
                     CommUtils.outcyan(name + " |  eval receives:" + message + " pageCtx=" + (pageCtx!=null) + " allConns:" +allConns.size());
-                    if(  m.msgSender().equals("unknown") && m.msgContent().contains("canvasready") && pageCtx==null) { 
+                    
+                    
+                    if(  m.msgSender().equals("unknown") && m.msgContent().contains("canvasready") && pageCtx==null) {  //da browser mandiamo canvasready per iniziare la connessione
                     	pageCtx = ctx;  //memorizzo connessione pagina
                     	CommUtils.outmagenta(name + " |  memorizzo pageCtx:" + pageCtx);
-                    }else if( m.msgSender().equals("lifectrl") && m.msgId().contains("setcontroller")) { 
-                    	lifeCtrlCtx = ctx; //memorizzo connessione controller
-                    	CommUtils.outmagenta(name + " |  memorizzo lifeCtrlCtx:" + lifeCtrlCtx );
-            			sendsafe( lifeCtrlCtx, "msg( eval, dispatch, caller1, lifectrl, clear, 0 )" );
-                     }else if( m.msgReceiver().equals(name) && m.msgContent().contains("cell(")) {                   
-                    	if (pageCtx != null) {
+                	
+        			}else if( m.msgSender().equals("lifectrl") && m.msgId().contains("setcontroller")) { //dal controller mandiamo setcontroller per iniziare la connessione con servizio controller
+        				lifeCtrlCtx = ctx; //memorizzo connessione controller
+    					CommUtils.outmagenta(name + " |  memorizzo lifeCtrlCtx:" + lifeCtrlCtx );
+    					sendsafe( lifeCtrlCtx, "msg( eval, dispatch, caller1, lifectrl, clear, 0 )" );//qua mandiamo una risposta mi sa
+					
+    					
+    					
+        			}else if( m.msgReceiver().equals(name) && m.msgContent().contains("cell(")) { //questo messaggio per cambiare valore alla cella            
+        				if (pageCtx != null) {
                         	//Funziona se ci sono 3 arg - es. cell(5,6,1)
                     		pageCtx.send( m.msgContent()); 
                      	}
+        				
                     	if( m.isRequest() ) {  //m viene da fuori, non dalla pagina
                     		IApplMessage reply = CommUtils.buildReply(name,"replyTo_"+m.msgId(),"done",m.msgSender()); 
                     		ctx.send(reply.toString());
+                    		
                       	}else if( m.msgSender().equals(firstCaller) ){
                      		//ctx.send("updateCellColor sent from page");
                      		CommUtils.outmagenta("lifeCtrlCtx send " + m);
-                    		if( lifeCtrlCtx != null ) 
-                    			sendsafe( lifeCtrlCtx, m.toString() );
+                    		if( lifeCtrlCtx != null ) sendsafe( lifeCtrlCtx, m.toString() );
                      	}
                     	
                     }else if( m.msgReceiver().equals("lifectrl") ) {  
-                     	if( m.msgSender().equals("unknown") ){
+                    	if( m.msgSender().equals("unknown") ){
                     		//Nuova paginna collegata
                     		return;
                     	}
                     	if( m.msgSender().equals(firstCaller) ){
                        		CommUtils.outblue(name + " sending to lifeCtrlCtx: " + m);
-                    		if( lifeCtrlCtx != null ) 
-                    			sendsafe( lifeCtrlCtx, m.toString() );
+                    		if( lifeCtrlCtx != null ) sendsafe( lifeCtrlCtx, m.toString() );
                     		//msg( eval, dispatch, caller1, lifectrl, clear, 0 )
                      	}else {
                      		CommUtils.outred("lifeCtrlCtx send to page ???" + m.msgContent() );
@@ -189,6 +198,7 @@ public class IoJavalin {
                     }
 //                    CommUtils.outcyan(name + " |  allConns:" +allConns.size());
 //                    allConns.forEach( (conn) ->	conn.send(m.msgContent()) );
+                
                 }catch(Exception e) {
                 	CommUtils.outred(name + " |  not a IApplMessage:" + message);
 //                	allConns.forEach( (conn) ->	conn.send(message) );

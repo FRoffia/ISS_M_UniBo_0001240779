@@ -54,10 +54,7 @@ di una interfaccia grafica in html tramite server javalin.
 
 <pre>
 		
-	<a href="https://froffia.github.io/ISS_M_UniBo_0001240779/conway26Java_v0.html">Requisiti di modello</a> (da sprint 1)
-	
-	Serve una implementazione di <a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/IOutDev.java">IOutDev</a> in grado di comunicare con un server distribuito. 
-
+	<a href="https://froffia.github.io/ISS_M_UniBo_0001240779/conway26Java_v0.html">Requisiti di modello</a> (da sprint 1) 
 	
 </pre>
  
@@ -66,8 +63,20 @@ di una interfaccia grafica in html tramite server javalin.
  <pre>
 	Modello logico dell'applicazione:
 	<img src="img/requisiti_progetto_javalin_esterno.png">
-	Cosa intendo per <a href="https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#chapter.9">interconnessione</a>
+	
+	Serve una implementazione di <a href="https://github.com/FRoffia/ISS_M_UniBo_0001240779/blob/main/ConwayLife/Sprint1/conway26Java/src/main/java/conway/domain/IOutDev.java">IOutDev</a> in grado di comunicare con un server distribuito.
+	
+	Cosa intendo per <a href="https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#section.9.3">interconnessione</a>
+	
 	Che messaggi vengono scambiati?
+	
+	Un messaggio da parte della pagina browser rivolto verso il server per registrare la connessione
+	Un messaggio da parte del servizio controller al server per registrare la connessione
+	Messaggi dal browser al server per catturare le interazioni dell'utente con la pagina
+	Messaggi dal server al controller per informarlo delle interazioni dell'utente
+	Messaggi dal controller al server per informare dei cambiamenti di stato
+	Messaggi dal server al browser per chiedere di esporre i cambiamenti allo stato del modello all'utente
+	
 	
 </pre>
 
